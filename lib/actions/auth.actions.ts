@@ -4,6 +4,20 @@ import {auth} from "@/lib/better-auth/auth";
 import {inngest} from "@/lib/inngest/client";
 import {headers} from "next/headers";
 
+export const triggerUserCreatedEvent = async ({ email, name, country, investmentGoals, riskTolerance, preferredIndustry }: {
+    email: string;
+    name: string;
+    country: string;
+    investmentGoals: string;
+    riskTolerance: string;
+    preferredIndustry: string;
+}) => {
+    await inngest.send({
+        name: 'app/user.created',
+        data: { email, name, country, investmentGoals, riskTolerance, preferredIndustry }
+    });
+}
+
 export const signUpWithEmail = async ({ email, password, fullName, country, investmentGoals, riskTolerance, preferredIndustry }: SignUpFormData) => {
     try {
         const response = await auth.api.signUpEmail({ body: { email, password, name: fullName } })
