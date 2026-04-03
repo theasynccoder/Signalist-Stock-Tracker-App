@@ -26,20 +26,28 @@ const SignUp = () => {
             country: 'US',
             investmentGoals: 'Growth',
             riskTolerance: 'Medium',
-            preferredIndustry: 'Technology'
+            preferredIndustry: 'Technology',
         },
-        mode: 'onBlur'
-    }, );
+        mode: 'onChange',
+    });
 
     const onSubmit = async (data: SignUpFormData) => {
         try {
             const result = await signUpWithEmail(data);
-            if(result.success) router.push('/');
+
+            if (result.success) {
+                router.push('/');
+            } else {
+                toast.error('Sign up failed', {
+                    description: result.error || 'Unable to create an account. Please try again.',
+                });
+            }
         } catch (e) {
             console.error(e);
             toast.error('Sign up failed', {
-                description: e instanceof Error ? e.message : 'Failed to create an account.'
-            })
+                description:
+                    e instanceof Error ? e.message : 'Failed to create an account.',
+            });
         }
     }
 
